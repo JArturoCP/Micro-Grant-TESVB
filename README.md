@@ -69,6 +69,6 @@ Para visualizar la experiencia de usuario final en el TESVB, hemos diseñado un 
 🎓 Créditos
 Proyecto desarrollado para el Solana Hackathon LATAM 2026 por:
 
-Estudiante: Ingeniería en Sistemas Computacionales, 6to Semestre.
+Estudiante: José Arturo Carbajal Peñaloza, Adán Lopez Bautista, Luis Javier Chavez Buenrrostro Ingeniería en Sistemas Computacionales, 6to Semestre.
 
 Institución: Tecnológico de Estudios Superiores de Valle de Bravo (TESVB).
