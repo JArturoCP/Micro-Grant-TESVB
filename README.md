@@ -1,86 +1,79 @@
-# Primeros pasos en Solana
-![Banner](./images/SolanaBanner.jpg)
-Solana es una blockchain de capa 1, es decir, cuenta con su propia infraestructura y no depende de otras blockchains para funcionar. Se encuentra orientada al alto rendimiento, y fue creada para soportar aplicaciones descentralizadas a gran escala con costos mínimos y confirmaciones casi inmediatas. Su diseño prioriza la eficiencia en la ejecución y la paralelización de transacciones.
+Aquí tienes la versión definitiva y completa de tu README.md, optimizada para destacar tu perfil como estudiante de ingeniería del TESVB y facilitar la revisión técnica a los jueces mediante Solana Playground.
 
-Rust es el lenguaje principal para desarrollar programas en Solana. A través de él se implementa la lógica on-chain utilizando el modelo de cuentas y programas de la red, permitiendo construir contratos inteligentes seguros, eficientes y altamente optimizables.
+Copia y pega este contenido en tu archivo:
 
-Puedes comenzar dándole Fork a este repositorio (abajo te explicamos como 👇)
+Micro-Grant TESVB 🚀
+Crowdfunding Descentralizado para la Innovación Universitaria
+Micro-Grant TESVB es una solución de financiamiento colectivo diseñada para que la comunidad estudiantil del Tecnológico de Estudios Superiores de Valle de Bravo pueda impulsar sus proyectos técnicos y de investigación (como los del Taller de Investigación) de manera transparente, eliminando intermediarios y utilizando la infraestructura de la blockchain de Solana.
 
-Asegúrate de clonar este repositorio a tu cuenta usando el botón **`Fork`**.
+💡 El Problema y la Solución
+En el entorno académico, muchos proyectos de ingeniería se detienen por falta de capital inicial. Las colectas tradicionales suelen carecer de un registro claro y dependen de la confianza en una persona física.
 
-![fork](./images/fork.png)
+Micro-Grant TESVB resuelve esto mediante un Escrow (fideicomiso) inteligente:
 
-* Puedes renombrar el repositorio a lo que sea que se ajuste con tu proyecto.
+Seguridad: Los fondos no se depositan en una wallet personal, sino que se bloquean en una PDA (Program Derived Address).
 
-## Solana Playground
-Solana Playground es un entorno de desarrollo online que permite escribir, compilar, desplegar y probar programas de Solana directamente desde el navegador, sin necesidad de instalar herramientas locales como Rust, Solana CLI o Anchor.
+Integridad: El contrato inteligente garantiza que el autor solo pueda retirar los fondos si se alcanza la meta de recaudación establecida.
 
-![Playground](./images/playground.png)
+🛠️ Arquitectura Técnica
+El programa está desarrollado con el framework Anchor y utiliza las siguientes innovaciones de Solana:
 
-Para abrir el **Playground** solo es necesario dar clic 👉 [Aquí](https://beta.solpg.io)
+Bóvedas PDA: Cada proyecto genera su propia dirección de cuenta inmutable basada en semillas: [b"grant", nombre_del_proyecto].
 
-## Configuración del entorno
+Validación de Autoría: Se utiliza el atributo has_one = autor para asegurar que únicamente el creador del proyecto tenga permisos de retiro.
 
-Primero conectaremos el entorno con la devnet, lo que tambien procederá a la creación de una wallet. Para eso daremos clic en donde dice **Not Conected**:
+Manejo de Lamports: Transferencia nativa de SOL entre el donante y la bóveda del programa mediante instrucciones de sistema (system_instruction).
 
-![playground1](./images/playground1.png)
+🚀 Guía de Ejecución en Solana Playground (SolPG)
+Para facilitar la auditoría del código, este proyecto está diseñado para ejecutarse directamente en el navegador sin instalaciones locales:
 
-Saldrá la siguiente ventana donde daremos en el botón **Continue**:
+1. Preparación en SolPG
+Accede a solpg.io.
 
-![wallet](./images/wallet.png)
+Crea un nuevo proyecto: selecciona "Anchor (Rust)" y nómbralo micro_grant_tesvb.
 
-Como resultado se mostrará la siguiente información:
+Reemplaza el contenido de src/lib.rs con el código proporcionado en este repositorio.
 
-![status](./images/status.png)
+2. Despliegue (Build & Deploy)
+Haz clic en el icono de Build (martillo) en la barra lateral.
 
-* En verde: el estado de la conexión y el entorno al que se encuentra conectado
+Tras la compilación exitosa, haz clic en el icono de Deploy (nave espacial).
 
-* En amarillo: la la dirección de la wallet conectada
+Asegúrate de estar conectado a la Devnet y tener SOL de prueba (solana airdrop 2 en la terminal).
 
-* En azul: la cantidad de tokens en la wallet
+3. Ejecución del Cliente Técnico
+Abre el archivo client/client.ts en el explorador de archivos de SolPG.
 
-> ℹ️ ¿Quieres ver el ejemplo de un "Hola Mundo" en Solana?. Da clic aquí: 👉 [Ver Ejemplo](./build-deploy/README.md)
+Pega el código del cliente incluido en este repositorio.
 
-> ℹ️ ¿Cuentas con una Wallet de [Phantom](https://phantom.com/) que deseas importar?, Da clic aquí para ver como hacerlo: 
+En la terminal de Playground, ejecuta el comando:
 
-👉 [Como Importar una Wallet](./import-key-a-playground/README.md)
+Bash
+run
+El script realizará automáticamente:
 
-## ¿Listo para empezar?
+La derivación de las PDAs.
 
-El primer paso es hacer `fork` al repositorio. Ya con el repositorio en tu cuenta lo siguiente que debes hacer es entrar a la carpeta `proyecto` y obtener el `permalink`:
+La creación del proyecto en la blockchain.
 
-![permalink](./images/permalink.png)
+Una donación de prueba de 0.1 SOL.
 
-El cual uniremos con el siguiente enlace en nuestro navegador de preferencia:
+La consulta del estado actualizado de la meta.
 
-```url
-https://beta.solpg.io/
-```
+📊 Mockup del Frontend
+Para visualizar la experiencia de usuario final en el TESVB, hemos diseñado un prototipo de interfaz que muestra el avance de las metas "On-chain" y la integración con la wallet de Phantom.
 
-Lo que nos dará algo parecido a:
+<img width="868" height="557" alt="mockup" src="https://github.com/user-attachments/assets/c94a631e-ce1c-423d-b672-df94ea9f78a3" />
 
-![url](./images/url.png)
 
-Al pulsar enter seremos enviados al `Solana Playground` con nuestro proyecto abierto:
+🎥 Demo y Documentación
+Video de la Demo (Loom): [Enlace al video]
 
-![pg](./images/pg.png)
+IDL del Programa: Disponible en target/idl/micro_grant.json para inspección de métodos.
 
-Para guardarlo solo damos clic en el boton `import` y asignamos un nombre:
+🎓 Créditos
+Proyecto desarrollado para el Solana Hackathon LATAM 2026 por:
 
-![import](./images/import.png)
+Estudiante: Ingeniería en Sistemas Computacionales, 6to Semestre.
 
-## ¿Como actualizo mi repositorio?
-
-Una vez que realices cambios o termines tu proyecto, es necesario que **copies todo el código**, ya con el código en el portapapeles nos dirigimos nuevamente a la carpeta proyecto de tu repositorio de github **donde se obtuvo el `permalink`**, donde entraremos al carpeta `src` y al archivo `lib.rs`:
-
-![edit](./images/edit.png)
-
-En `lib.rs` presionaremos el ícono en forma de lapiz (esquina superior derecha de la imagen 👆)
-
-Nuevamente seleccionamos todo el código pero ahora presionamos `ctrl + v` para pegar el código del `Playground`. Ya realizados los cambios presionamos el botón `Commit changes`:
-
-![commit](./images/commit.png)
-
-Nos aparecerá un menú de confirmación donde nuevamente presionamos el botón `Commit changes`:
-
-![commit2](./images/commit2.png)
+Institución: Tecnológico de Estudios Superiores de Valle de Bravo (TESVB).
