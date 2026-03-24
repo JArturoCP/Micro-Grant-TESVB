@@ -66,11 +66,6 @@ Para visualizar la experiencia de usuario final en el TESVB, hemos diseñado un 
 <img width="868" height="557" alt="mockup" src="https://github.com/user-attachments/assets/c94a631e-ce1c-423d-b672-df94ea9f78a3" />
 
 
-🎥 Demo y Documentación
-Video de la Demo (Loom): [Enlace al video]
-
-IDL del Programa: Disponible en target/idl/micro_grant.json para inspección de métodos.
-
 🎓 Créditos
 Proyecto desarrollado para el Solana Hackathon LATAM 2026 por:
 
