@@ -1,74 +1,192 @@
-Aquí tienes la versión definitiva y completa de tu README.md, optimizada para destacar tu perfil como estudiante de ingeniería del TESVB y facilitar la revisión técnica a los jueces mediante Solana Playground.
+# 🚚 FleetChain Solana - Explicación del Código
 
-Copia y pega este contenido en tu archivo:
+Este programa está desarrollado en **Rust** utilizando el framework **Anchor** para la blockchain de **Solana**. Su objetivo es gestionar el historial de mantenimientos de una flotilla de vehículos mediante operaciones tipo **CRUD** (Crear, Leer, Actualizar y Eliminar).
 
-Micro-Grant TESVB 🚀
-Crowdfunding Descentralizado para la Innovación Universitaria
-Micro-Grant TESVB es una solución de financiamiento colectivo diseñada para que la comunidad estudiantil del Tecnológico de Estudios Superiores de Valle de Bravo pueda impulsar sus proyectos técnicos y de investigación (como los del Taller de Investigación) de manera transparente, eliminando intermediarios y utilizando la infraestructura de la blockchain de Solana.
+---
 
-💡 El Problema y la Solución
-En el entorno académico, muchos proyectos de ingeniería se detienen por falta de capital inicial. Las colectas tradicionales suelen carecer de un registro claro y dependen de la confianza en una persona física.
+## 🔑 1. Configuración Inicial
 
-Micro-Grant TESVB resuelve esto mediante un Escrow (fideicomiso) inteligente:
+use anchor_lang::prelude::*;
 
-Seguridad: Los fondos no se depositan en una wallet personal, sino que se bloquean en una PDA (Program Derived Address).
+// ID del programa
+declare_id!("2nZDmTBcKALtWFbiHqME2nP5THcagqddtrJKVmBuANTY");
 
-Integridad: El contrato inteligente garantiza que el autor solo pueda retirar los fondos si se alcanza la meta de recaudación establecida.
+* Se importa la librería principal de Anchor.
+* `declare_id!` define el identificador único del programa en la red de Solana.
 
-🛠️ Arquitectura Técnica
-El programa está desarrollado con el framework Anchor y utiliza las siguientes innovaciones de Solana:
+---
 
-Bóvedas PDA: Cada proyecto genera su propia dirección de cuenta inmutable basada en semillas: [b"grant", nombre_del_proyecto].
+## ⚙️ 2. Módulo del Programa
 
-Validación de Autoría: Se utiliza el atributo has_one = autor para asegurar que únicamente el creador del proyecto tenga permisos de retiro.
+#[program]
+pub mod fleetchain_solana {
 
-Manejo de Lamports: Transferencia nativa de SOL entre el donante y la bóveda del programa mediante instrucciones de sistema (system_instruction).
+Aquí se definen todas las funciones públicas del smart contract.
 
-🚀 Guía de Ejecución en Solana Playground (SolPG)
-Para facilitar la auditoría del código, este proyecto está diseñado para ejecutarse directamente en el navegador sin instalaciones locales:
+---
 
-1. Preparación en SolPG
-Accede a solpg.io.
+## 🟢 3. Operaciones CRUD
 
-Crea un nuevo proyecto: selecciona "Anchor (Rust)" y nómbralo micro_grant_tesvb.
+### 3.1 CREATE - Inicializar Flotilla
 
-Reemplaza el contenido de src/lib.rs con el código proporcionado en este repositorio.
+pub fn inicializar_flotilla(ctx: Context<CrearFlotilla>, nombre_empresa: String) -> Result<()>
 
-2. Despliegue (Build & Deploy)
-Haz clic en el icono de Build (martillo) en la barra lateral.
+* Crea una cuenta en la blockchain que representa la flotilla.
+* Guarda:
 
-Tras la compilación exitosa, haz clic en el icono de Deploy (nave espacial).
+  * El propietario (`owner`)
+  * El nombre de la empresa
+  * Un arreglo vacío de servicios
 
-Asegúrate de estar conectado a la Devnet y tener SOL de prueba (solana airdrop 2 en la terminal).
+👉 Usa un **PDA (Program Derived Address)** para generar una dirección única.
 
-3. Ejecución del Cliente Técnico
-Abre el archivo client/client.ts en el explorador de archivos de SolPG.
+---
 
-Pega el código del cliente incluido en este repositorio.
+### 3.2 CREATE - Registrar Mantenimiento
 
-En la terminal de Playground, ejecuta el comando:
+pub fn registrar_mantenimiento(...)
 
-Bash
-run
-El script realizará automáticamente:
+* Agrega un nuevo registro de mantenimiento.
+* Valida que quien ejecuta la función sea el dueño:
 
-La derivación de las PDAs.
+require!(gestor.owner == ctx.accounts.owner.key(), Errores::NoEresElOwner);
 
-La creación del proyecto en la blockchain.
+* Inserta un nuevo objeto `Mantenimiento` en el vector.
 
-Una donación de prueba de 0.1 SOL.
+---
 
-La consulta del estado actualizado de la meta.
+### 3.3 UPDATE - Editar Mantenimiento
 
-📊 Mockup del Frontend
-Para visualizar la experiencia de usuario final en el TESVB, hemos diseñado un prototipo de interfaz que muestra el avance de las metas "On-chain" y la integración con la wallet de Phantom.
+pub fn editar_mantenimiento(...)
 
-<img width="868" height="557" alt="mockup" src="https://github.com/user-attachments/assets/c94a631e-ce1c-423d-b672-df94ea9f78a3" />
+* Busca un mantenimiento por la **placa del vehículo**.
+* Si lo encuentra:
 
+  * Actualiza tipo, kilometraje y costo.
+* Si no:
 
-🎓 Créditos
-Proyecto desarrollado para el Solana Hackathon LATAM 2026 por:
+  * Lanza error `VehiculoNoEncontrado`.
 
-Estudiante: José Arturo Carbajal Peñaloza, Adán Lopez Bautista, Luis Javier Chavez Buenrrostro Ingeniería en Sistemas Computacionales, 6to Semestre.
+---
 
-Institución: Tecnológico de Estudios Superiores de Valle de Bravo (TESVB).
+### 3.4 DELETE - Eliminar Mantenimiento
+
+pub fn eliminar_mantenimiento(...)
+
+* Busca el índice del mantenimiento.
+* Si existe:
+
+  * Lo elimina con `remove()`.
+* Si no:
+
+  * Retorna error.
+
+---
+
+### 3.5 READ - Ver Historial
+
+pub fn ver_historial(...)
+
+* Muestra en consola:
+
+  * Nombre de la empresa
+  * Lista completa de mantenimientos
+
+---
+
+## 📦 4. Estructuras de Datos
+
+### 🔧 Mantenimiento
+
+pub struct Mantenimiento {
+pub placa_vehiculo: String,
+pub tipo_servicio: String,
+pub kilometraje_actual: u32,
+pub costo_servicio: u32,
+}
+
+Representa un registro individual de mantenimiento.
+
+📌 Incluye restricciones:
+
+* `placa_vehiculo`: máximo 10 caracteres
+* `tipo_servicio`: máximo 30 caracteres
+
+---
+
+### 🏢 GestorFlotilla
+
+pub struct GestorFlotilla {
+pub owner: Pubkey,
+pub nombre_empresa: String,
+pub servicios: Vec<Mantenimiento>,
+}
+
+* Es la cuenta principal almacenada en la blockchain.
+* Contiene:
+
+  * Propietario
+  * Nombre de empresa
+  * Lista de mantenimientos
+
+📌 Límite:
+
+* Máximo 10 servicios en el vector
+
+---
+
+## 🔐 5. Contextos (Accounts)
+
+### CrearFlotilla
+
+#[derive(Accounts)]
+pub struct CrearFlotilla<'info>
+
+* Define las cuentas necesarias para crear la flotilla:
+
+  * `owner`: quien paga y firma
+  * `gestor`: cuenta que se inicializa
+  * `system_program`: requerido por Solana
+
+📌 Usa:
+
+* `seeds` → para generar el PDA
+* `bump` → evitar colisiones
+
+---
+
+### GestionarFlotilla
+
+#[derive(Accounts)]
+pub struct GestionarFlotilla<'info>
+
+* Se usa para todas las operaciones CRUD.
+* Requiere:
+
+  * `owner` (firmante)
+  * `gestor` (cuenta mutable)
+
+---
+
+## ⚠️ 6. Manejo de Errores
+
+#[error_code]
+pub enum Errores {
+
+Define errores personalizados:
+
+* `NoEresElOwner` → cuando alguien no autorizado intenta modificar datos
+* `VehiculoNoEncontrado` → cuando no existe un registro con esa placa
+
+---
+
+## 🧠 Conclusión
+
+Este programa implementa un sistema completo de gestión de mantenimientos en blockchain usando:
+
+* 🔑 Control de acceso mediante `owner`
+* 📦 Almacenamiento estructurado en cuentas de Solana
+* ⚡ Uso de PDAs para direcciones determinísticas
+* 🔄 Operaciones CRUD sobre un vector interno
+
+Es un ejemplo claro de cómo llevar lógica de negocio tradicional (gestión de flotillas) a un entorno descentralizado, garantizando **integridad, transparencia y seguridad** en los datos.
